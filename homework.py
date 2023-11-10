@@ -65,7 +65,7 @@ class SportsWalking(Training):
     K_1: float = 0.035
     K_2: float = 0.029
     K_3_speed_meters: float = 0.278
-    K_4_duration_centimeter: int = 100
+    K_4_height_centimeter: int = 100
     """Тренировка: спортивная ходьба."""
     def __init__(self, action: int, 
                  duration: float, 
@@ -79,7 +79,7 @@ class SportsWalking(Training):
         #* 0.029 * вес) * время_тренировки_в_минутах
         return ((self.K_1 * self.weight 
                  + ((self.get_mean_speed() * self.K_3_speed_meters)** 2 
-                 / (self.height * self.K_4_duration_centimeter)) 
+                 / (self.height * self.K_4_height_centimeter)) 
                  * self.K_2 * self.weight) * self.minutes_in_hour)
 
 
