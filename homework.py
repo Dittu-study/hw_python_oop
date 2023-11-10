@@ -41,7 +41,8 @@ class Training:
 
     def get_spend_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        pass
+        if not self.get_spend_calories():
+            raise Exception('class must be redefined')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
