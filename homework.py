@@ -9,11 +9,14 @@ class InfoMessage:
 
     def get_message(self) -> str:
         message = (f'Тип тренировки: {self.training_type}; '
-                  f'Длительность: {self.duration:.3f} ч.; '
-                  f'Дистанция: {self.distance:.3f} км; '
-                  f'Ср. скорость: {self.speed:.3f} км/ч; '
-                  f'Потрачено ккал: {self.calories:.3f}.')
-        return message
+                   f'Длительность: {self.duration:.3f} ч.; '
+                   f'Дистанция: {self.distance:.3f} км; '
+                   f'Ср. скорость: {self.speed:.3f} км/ч; '
+                   f'Потрачено ккал: {self.calories:.3f}.')
+        return print(message)
+
+#class ExceptionPrintError(Exception):
+    #"""Класс исключения при неактивном методе затраченных калорий."""
 
 class Training:
     LEN_STEP: float = 0.65
@@ -41,13 +44,14 @@ class Training:
 
     def get_spend_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        if not self.get_spend_calories():
-            raise Exception('class must be redefined')
+        pass
+        #if not self.get_spend_calories():
+            #raise Exception('class must be redefined')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        info = InfoMessage()
-        return info.get_message()
+        take_message_class = InfoMessage()
+        return take_message_class
         
 
 class Running(Training):
@@ -103,12 +107,12 @@ class Swimming(Training):
     def get_spent_calories(self) -> float:
         #(средняя_скорость + 1.1) * 2 * вес * время_тренировки
         return ((self.get_mean_speed() + self.K_4) * self.K_5 
-                * self.weight * self.minutes_in_hour)
+                 * self.weight * self.minutes_in_hour)
 
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    packages_true = {}
+    packages_true: dict = {}
     if workout_type == 'RUN':
         packages_true[workout_type] = Running
         run = Running(data)
@@ -125,7 +129,7 @@ def read_package(workout_type: str, data: list) -> Training:
 def main(training: Training) -> None:
     """Главная функция."""
     info = training.show_training_info()
-    return info
+    return info.get_message()
 
 if __name__ == '__main__':
     packages = [
