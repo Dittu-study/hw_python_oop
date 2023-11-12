@@ -12,10 +12,10 @@ class InfoMessage:
 
     def get_message(self) -> str:
         K_message: str = (self.training_type,
-                           self.duration,
-                           self.distance,
-                           self.speed,
-                           self.calories)
+                          self.duration,
+                          self.distance,
+                          self.speed,
+                          self.calories)
         return ('Тип тренировки: {0}; '
                 'Длительность: {1:.3f} ч.; '
                 'Дистанция: {2:.3f} км; '
