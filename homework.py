@@ -1,6 +1,8 @@
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    def __init__(self, training_type, duration, distance, speed, calories):
+    def __init__(self, training_type: object,
+                 duration: int, distance: float,
+                 speed: float, calories: float):
         self.training_type = training_type
         self.duration = duration
         self.distance = distance
@@ -24,8 +26,8 @@ class Training:
     """Базовый класс тренировки."""
     def __init__(self,
                  action: int,
-                 duration: float,
-                 weight: float
+                 duration: int,
+                 weight: int
                  ) -> None:
         self.action = action
         self.duration = duration
@@ -58,7 +60,7 @@ class Training:
         return take_message_class
 
     def get_training_type(self) -> str:
-        return ''
+        pass
 
 
 class Running(Training):
@@ -74,7 +76,7 @@ class Running(Training):
                 * self.weight / self.M_IN_KM * self.duration_in_min)
 
     def get_training_type(self) -> str:
-        return 'Running'
+        return Running.__name__
 
 
 class SportsWalking(Training):
@@ -84,9 +86,9 @@ class SportsWalking(Training):
     K_4_height_centimeter: int = 100
     """Тренировка: спортивная ходьба."""
     def __init__(self, action: int,
-                 duration: float,
-                 weight: float,
-                 height: float) -> None:
+                 duration: int,
+                 weight: int,
+                 height: int) -> None:
         super().__init__(action, duration, weight)
         self.height = height
         self.height_in_meters = self.height / self.K_4_height_centimeter
@@ -101,7 +103,7 @@ class SportsWalking(Training):
                 * self.weight) * self.duration_in_min)
 
     def get_training_type(self) -> str:
-        return 'SportsWalking'
+        return SportsWalking.__name__
 
 
 class Swimming(Training):
@@ -126,7 +128,7 @@ class Swimming(Training):
                 * self.weight * self.duration)
 
     def get_training_type(self) -> str:
-        return 'Swimming'
+        return Swimming.__name__
 
 
 def read_package(workout_type: str, data: list) -> Training:
