@@ -1,28 +1,27 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    def __init__(self, training_type: object,
-                 duration: int, distance: float,
-                 speed: float, calories: float):
-        self.training_type = training_type
-        self.duration = duration
-        self.distance = distance
-        self.speed = speed
-        self.calories = calories
+    training_type: object
+    duration: int
+    distance: float
+    speed: float
+    calories: float
 
     def get_message(self) -> str:
-        message = (f'Тип тренировки: {self.training_type}; '
-                   f'Длительность: {self.duration:.3f} ч.; '
-                   f'Дистанция: {self.distance:.3f} км; '
-                   f'Ср. скорость: {self.speed:.3f} км/ч; '
-                   f'Потрачено ккал: {self.calories:.3f}.')
-        return message
+        return (f'Тип тренировки: {self.training_type}; '
+                f'Длительность: {self.duration:.3f} ч.; '
+                f'Дистанция: {self.distance:.3f} км; '
+                f'Ср. скорость: {self.speed:.3f} км/ч; '
+                f'Потрачено ккал: {self.calories:.3f}.')
 
 
 class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
     min_in_hour: int = 60
-
     """Базовый класс тренировки."""
     def __init__(self,
                  action: int,
@@ -36,28 +35,23 @@ class Training:
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        # action * LEN_STEP / M_IN_KM
         return self.action * self.LEN_STEP / self.M_IN_KM
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения км/ч."""
-        # преодолённая_дистанция_за_тренировку / время_тренировки
         return self.get_distance() / self.duration
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         pass
-        # if not self.get_spend_calories():
-        # raise Exception('class must be redefined')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        take_message_class = InfoMessage(self.get_training_type(),
-                                         self.duration,
-                                         self.get_distance(),
-                                         self.get_mean_speed(),
-                                         self.get_spent_calories())
-        return take_message_class
+        return InfoMessage(self.get_training_type(),
+                           self.duration,
+                           self.get_distance(),
+                           self.get_mean_speed(),
+                           self.get_spent_calories())
 
     def get_training_type(self) -> str:
         pass
@@ -69,8 +63,6 @@ class Running(Training):
     CALORIES_MEAN_SPEED_SHIFT: float = 1.79
 
     def get_spent_calories(self) -> float:
-        # (18 * средняя_скорость + 1.79) * вес_спортсмена
-        # / M_IN_KM * время_тренировки_в_минутах
         return ((self.CALORIES_MEAN_SPEED_MULTIPLIER * self.get_mean_speed()
                 + self.CALORIES_MEAN_SPEED_SHIFT)
                 * self.weight / self.M_IN_KM * self.duration_in_min)
@@ -95,8 +87,6 @@ class SportsWalking(Training):
         self.speed_m_min = self.get_mean_speed() * self.K_3_speed_meters
 
     def get_spent_calories(self) -> float:
-        # (0.035 * вес + (средняя_скорость_в_метрах_в_секунду**2
-        # / рост_в_метрах) * 0.029 * вес) * время_тренировки_в_минутах
         return ((self.K_1 * self.weight
                 + (self.speed_m_min ** 2
                  / self.height_in_meters) * self.K_2
@@ -118,12 +108,10 @@ class Swimming(Training):
         self.count_pool = count_pool
 
     def get_mean_speed(self) -> float:
-        # длина_бассейна * count_pool / M_IN_KM / время_тренировки
         return (self.length_pool * self.count_pool
                 / self.M_IN_KM / self.duration)
 
     def get_spent_calories(self) -> float:
-        # (средняя_скорость + 1.1) * 2 * вес * время_тренировки
         return ((self.get_mean_speed() + self.K_4) * self.K_5
                 * self.weight * self.duration)
 
