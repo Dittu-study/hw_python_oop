@@ -19,7 +19,7 @@ class InfoMessage:
 
 
 class PrintError(NotImplementedError):
-    """Класс исключения при неактивном методе затраченных калорий."""
+    """Класс исключения при неактивном методе."""
     def __str__(self):
         return 'class must be redefined'
 
