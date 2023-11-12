@@ -11,11 +11,16 @@ class InfoMessage:
     calories: float
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type}; '
-                f'Длительность: {self.duration:.3f} ч.; '
-                f'Дистанция: {self.distance:.3f} км; '
-                f'Ср. скорость: {self.speed:.3f} км/ч; '
-                f'Потрачено ккал: {self.calories:.3f}.')
+        K_message: str = (self.training_type,
+                           self.duration,
+                           self.distance,
+                           self.speed,
+                           self.calories)
+        return ('Тип тренировки: {0}; '
+                'Длительность: {1:.3f} ч.; '
+                'Дистанция: {2:.3f} км; '
+                'Ср. скорость: {3:.3f} км/ч; '
+                'Потрачено ккал: {4:.3f}.').format(*K_message)
 
 
 class PrintError(NotImplementedError):
