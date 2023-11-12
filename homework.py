@@ -18,6 +18,12 @@ class InfoMessage:
                 f'Потрачено ккал: {self.calories:.3f}.')
 
 
+class PrintError(NotImplementedError):
+    """Класс исключения при неактивном методе затраченных калорий."""
+    def __str__(self):
+        return 'class must be redefined'
+
+
 class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
@@ -43,7 +49,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise NotImplementedError
+        raise PrintError()
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -54,7 +60,8 @@ class Training:
                            self.get_spent_calories())
 
     def get_training_type(self) -> str:
-        raise NotImplementedError
+        if not self.get_training_type:
+            raise PrintError()
 
 
 class Running(Training):
