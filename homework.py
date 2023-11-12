@@ -136,15 +136,15 @@ def read_package(workout_type: str, data: list) -> Training:
     packages_true: dict = {}
     if workout_type == 'RUN':
         packages_true[workout_type] = Running
-        run = Running(data[0], data[1], data[2])
+        run = Running(*data)
         return run
     if workout_type == 'WLK':
         packages_true[workout_type] = SportsWalking
-        wlk = SportsWalking(data[0], data[1], data[2], data[3])
+        wlk = SportsWalking(*data)
         return wlk
     if workout_type == 'SWM':
         packages_true[workout_type] = Swimming
-        swm = Swimming(data[0], data[1], data[2], data[3], data[4])
+        swm = Swimming(*data)
         return swm
 
 
