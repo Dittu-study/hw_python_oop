@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+from typing import ClassVar
 
 
 @dataclass
@@ -9,16 +10,16 @@ class InfoMessage:
     distance: float
     speed: float
     calories: float
+    MESSAGE_TEMPLATE: ClassVar[str] = (
+        'Тип тренировки: {training_type}; '
+        'Длительность: {duration:.3f} ч.; '
+        'Дистанция: {distance:.3f} км; '
+        'Ср. скорость: {speed:.3f} км/ч; '
+        'Потрачено ккал: {calories:.3f}.'
+    )
 
     def get_message(self) -> str:
-        K_message = InfoMessage(0, 1, 2, 3, 4)
-
-        return (f'Тип тренировки: {self.training_type}; '
-                f'Длительность: {self.duration:.3f} ч.; '
-                f'Дистанция: {self.distance:.3f} км; '
-                f'Ср. скорость: {self.speed:.3f} км/ч; '
-                'Потрачено ккал: '
-                f'{self.calories:.3f}.').format(**asdict(K_message))
+        return self.MESSAGE_TEMPLATE.format(**asdict(self))
 
 
 class PrintError(NotImplementedError):
