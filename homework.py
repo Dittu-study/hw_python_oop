@@ -119,19 +119,14 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    packages_true: dict = {}
-    if workout_type == 'RUN':
-        packages_true[workout_type] = Running
-        run = Running(*data)
-        return run
-    if workout_type == 'WLK':
-        packages_true[workout_type] = SportsWalking
-        wlk = SportsWalking(*data)
-        return wlk
-    if workout_type == 'SWM':
-        packages_true[workout_type] = Swimming
-        swm = Swimming(*data)
-        return swm
+    packages_true: dict = {
+        'RUN': Running,
+        'WLK': SportsWalking,
+        'SWM': Swimming
+    }
+    if workout_type in packages_true:
+        new_arg = packages_true[workout_type]
+        return new_arg(*data)
 
 
 def main(training: Training) -> None:
