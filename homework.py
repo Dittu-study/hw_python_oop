@@ -22,12 +22,6 @@ class InfoMessage:
         return self.MESSAGE_TEMPLATE.format(**asdict(self))
 
 
-class PrintError(NotImplementedError):
-    """Класс исключения при неактивном методе."""
-    def __str__(self):
-        return 'class must be redefined'
-
-
 class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
@@ -53,7 +47,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise PrintError()
+        raise NotImplementedError('class must be redefined')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
