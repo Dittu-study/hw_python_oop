@@ -22,16 +22,10 @@ class InfoMessage:
         return self.MESSAGE_TEMPLATE.format(**asdict(self))
 
 
-class PrintError(NotImplementedError):
-    """Класс исключения при неактивном методе."""
-    def __str__(self):
-        return 'class must be redefined'
-
-
 class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
-    min_in_hour: int = 60
+    MIN_IN_HOUR: int = 60
     """Базовый класс тренировки."""
     def __init__(self,
                  action: int,
@@ -41,7 +35,7 @@ class Training:
         self.action = action
         self.duration = duration
         self.weight = weight
-        self.duration_in_min: int = self.min_in_hour * self.duration
+        self.duration_in_min: int = self.MIN_IN_HOUR * self.duration
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
@@ -53,15 +47,17 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise PrintError()
+        raise NotImplementedError('class must be redefined')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        return InfoMessage(self.__class__.__name__,
-                           self.duration,
-                           self.get_distance(),
-                           self.get_mean_speed(),
-                           self.get_spent_calories())
+        return InfoMessage(
+            self.__class__.__name__,
+            self.duration,
+            self.get_distance(),
+            self.get_mean_speed(),
+            self.get_spent_calories()
+        )
 
 
 class Running(Training):
@@ -117,16 +113,15 @@ class Swimming(Training):
                 * self.weight * self.duration)
 
 
-def read_package(workout_type: str, data: list) -> Training:
+def read_package(workout_type: str, data: list[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    packages_true: dict = {
+    CODE_AND_CLASSES: dict = {
         'RUN': Running,
         'WLK': SportsWalking,
         'SWM': Swimming
     }
-    if workout_type in packages_true:
-        new_arg = packages_true[workout_type]
-        return new_arg(*data)
+    if NEW_ARG := CODE_AND_CLASSES.get(workout_type):
+        return NEW_ARG(*data)
 
 
 def main(training: Training) -> None:
