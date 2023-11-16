@@ -23,10 +23,11 @@ class InfoMessage:
 
 
 class Training:
+    """Базовый класс тренировки."""
     LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
     MIN_IN_HOUR: int = 60
-    """Базовый класс тренировки."""
+
     def __init__(self,
                  action: int,
                  duration: int,
@@ -47,7 +48,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise NotImplementedError('class must be redefined')
+        raise NotImplementedError()
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -72,19 +73,20 @@ class Running(Training):
 
 
 class SportsWalking(Training):
+    """Тренировка: спортивная ходьба."""
     K_1: float = 0.035
     K_2: float = 0.029
-    K_3_speed_meters: float = 0.278
-    K_4_height_centimeter: int = 100
-    """Тренировка: спортивная ходьба."""
+    K_3_SPEED_METERS: float = 0.278
+    K_4_HEIGHT_CENTIMETERS: int = 100
+
     def __init__(self, action: int,
                  duration: int,
                  weight: int,
                  height: int) -> None:
         super().__init__(action, duration, weight)
         self.height = height
-        self.height_in_meters = self.height / self.K_4_height_centimeter
-        self.speed_m_min = self.get_mean_speed() * self.K_3_speed_meters
+        self.height_in_meters = self.height / self.K_4_HEIGHT_CENTIMETERS
+        self.speed_m_min = self.get_mean_speed() * self.K_3_SPEED_METERS
 
     def get_spent_calories(self) -> float:
         return ((self.K_1 * self.weight
@@ -94,10 +96,11 @@ class SportsWalking(Training):
 
 
 class Swimming(Training):
+    """Тренировка: плавание."""
     K_4: float = 1.1
     K_5: int = 2
     LEN_STEP: float = 1.38
-    """Тренировка: плавание."""
+
     def __init__(self, action: int, duration: float, weight: float,
                  length_pool: int, count_pool: int) -> None:
         super().__init__(action, duration, weight)
@@ -113,16 +116,16 @@ class Swimming(Training):
                 * self.weight * self.duration)
 
 
-def read_package(workout_type: str, data: list[int]) -> Training:
+def read_package(workout_type: str, data: list[float]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    CODE_AND_CLASSES: dict = {
+    training_types: dict = {
         'RUN': Running,
         'WLK': SportsWalking,
         'SWM': Swimming
     }
-    if NEW_ARG := CODE_AND_CLASSES.get(workout_type):
-        return NEW_ARG(*data)
-    raise ValueError('Function receives an invalid argument')
+    if new_arg := training_types.get(workout_type):
+        return new_arg(*data)
+    raise ValueError()
 
 
 def main(training: Training) -> None:
