@@ -122,6 +122,7 @@ def read_package(workout_type: str, data: list[int]) -> Training:
     }
     if NEW_ARG := CODE_AND_CLASSES.get(workout_type):
         return NEW_ARG(*data)
+    raise ValueError('Function receives an invalid argument')
 
 
 def main(training: Training) -> None:
